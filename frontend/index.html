@@ -11,15 +11,6 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #fff;
-            color: #000;
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.5;
-        }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -352,158 +343,370 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <div class="container">
-        <div id="authSection">
-            <div class="card">
-                <h2 class="text-center">CrossPoster</h2>
-                <p class="text-center muted" style="margin-bottom: 20px;">Публикуйте посты одновременно в Telegram и Discord</p>
-                
-                <div id="loginForm">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="loginEmail" placeholder="example@mail.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Пароль</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••">
-                    </div>
-                    <button class="btn btn-primary" onclick="login()">Войти</button>
-                    <p class="text-center" style="margin-top: 15px;">
-                        Нет аккаунта? <a href="#" onclick="showRegister()">Зарегистрироваться</a>
-                    </p>
-                    <div id="loginMessage"></div>
+        <div id="authSection" class="auth">
+            <div class="auth__topbar">
+                <div class="auth__theme">
+                    <button class="auth__theme-btn" id="authThemeToggle" type="button" aria-label="Тема">
+                        <span data-theme-icon>☀️</span>
+                    </button>
                 </div>
-
-                <div id="registerForm" class="hidden">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="registerEmail" placeholder="example@mail.com">
+                <div class="auth__lang">
+                    <div class="dropdown" data-dropdown>
+                        <button class="dropdown__trigger auth__lang-trigger" data-dropdown-trigger aria-expanded="false" type="button">
+                            <span data-lang-flag>🇷🇺</span>
+                            <span data-lang-label>Русский</span>
+                            <svg class="dropdown__chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown__menu" data-dropdown-menu hidden>
+                            <button class="dropdown__item" type="button" data-lang-option="ru">
+                                <span>🇷🇺</span>
+                                <span class="dropdown__item-label">Русский</span>
+                                <span class="dropdown__check">✓</span>
+                            </button>
+                            <button class="dropdown__item" type="button" data-lang-option="en">
+                                <span>🇺🇸</span>
+                                <span class="dropdown__item-label">English</span>
+                                <span class="dropdown__check">✓</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Пароль</label>
-                        <input type="password" id="registerPassword" placeholder="••••••••">
-                    </div>
-                    <button class="btn btn-primary" onclick="register()">Зарегистрироваться</button>
-                    <p class="text-center" style="margin-top: 15px;">
-                        <a href="#" onclick="showLogin()">Вернуться ко входу</a>
-                    </p>
-                    <div id="registerMessage"></div>
                 </div>
             </div>
+
+            <div class="auth__card">
+                <div class="auth__header">
+                    <h1 class="auth__title" data-i18n="auth.title">Вход в аккаунт</h1>
+                    <p class="auth__subtitle" data-i18n="auth.subtitle">Введите данные для входа</p>
+                </div>
+
+                <div id="loginForm" class="auth__form">
+                    <div class="auth__field">
+                        <label class="auth__label" for="loginEmail" data-i18n="auth.email">Email</label>
+                        <input type="email" id="loginEmail" class="auth__input" placeholder="example@mail.com">
+                    </div>
+                    <div class="auth__field">
+                        <label class="auth__label" for="loginPassword" data-i18n="auth.password">Пароль</label>
+                        <input type="password" id="loginPassword" class="auth__input" placeholder="••••••••">
+                    </div>
+                    <button class="auth__button" onclick="login()" data-i18n="auth.login">Войти</button>
+                    <p class="auth__footer">
+                        <span data-i18n="auth.no_account">Нет аккаунта?</span>
+                        <a href="#" class="auth__link" onclick="showRegister()" data-i18n="auth.register_link">Зарегистрироваться</a>
+                    </p>
+                    <div id="loginMessage" class="auth__message"></div>
+                </div>
+
+                <div id="registerForm" class="auth__form hidden">
+                    <div class="auth__field">
+                        <label class="auth__label" for="registerEmail" data-i18n="auth.email">Email</label>
+                        <input type="email" id="registerEmail" class="auth__input" placeholder="example@mail.com">
+                    </div>
+                    <div class="auth__field">
+                        <label class="auth__label" for="registerPassword" data-i18n="auth.password">Пароль</label>
+                        <input type="password" id="registerPassword" class="auth__input" placeholder="••••••••">
+                    </div>
+                    <button class="auth__button" onclick="register()" data-i18n="auth.register">Зарегистрироваться</button>
+                    <p class="auth__footer">
+                        <a href="#" class="auth__link" onclick="showLogin()" data-i18n="auth.back_to_login">Вернуться ко входу</a>
+                    </p>
+                    <div id="registerMessage" class="auth__message"></div>
+                </div>
+            </div>              
         </div>
 
-        <div id="mainSection" class="hidden">
-            <div class="app-header">
-                <span class="logo">CrossPoster</span>
-                <a href="#" onclick="showHistoryTab()">История постов</a>
-                <a href="#" onclick="showPostTab()">Опубликовать пост</a>
-                <a href="#" onclick="showAccountTab()">Аккаунт</a>
-                <button class="logout-btn" onclick="logout()">Выйти</button>
-            </div>
+                <div id="mainSection" class="hidden">
+            <div class="app">
+                <!-- Сайдбар -->
+                <aside class="app__sidebar">
+                    <div class="sidebar__brand">
+                        <span>CrossPoster</span>
+                    </div>
+                    <nav class="sidebar__nav">
+                        <a href="#" class="sidebar__link is-active" data-section="home" onclick="showSection('home'); return false;">
+                            <span class="sidebar__link-icon">🏠</span>
+                            <span data-i18n="sidebar.home">Главная</span>
+                        </a>
+                        <a href="#" class="sidebar__link" data-section="create" onclick="showSection('create'); return false;">
+                            <span class="sidebar__link-icon">✚</span>
+                            <span data-i18n="sidebar.create_post">Создать пост</span>
+                        </a>
+                        <a href="#" class="sidebar__link" data-section="history" onclick="showSection('history'); return false;">
+                            <span class="sidebar__link-icon">◷</span>
+                            <span data-i18n="sidebar.history">История постов</span>
+                        </a>
+                        <div class="sidebar__group-title" data-i18n="sidebar.channels">📌 Площадки</div>
+                        <a href="#" class="sidebar__link sidebar__link--sub" data-section="telegram" onclick="showSection('telegram'); return false;">
+                            <span class="sidebar__link-icon">🔵</span>
+                            <span data-i18n="sidebar.telegram">Telegram</span>
+                        </a>
+                        <a href="#" class="sidebar__link sidebar__link--sub" data-section="discord" onclick="showSection('discord'); return false;">
+                            <span class="sidebar__link-icon">🟣</span>
+                            <span data-i18n="sidebar.discord">Discord</span>
+                        </a>
+                    </nav>
+                </aside>
 
-            <div id="tabContent">
-                <div id="postTab" class="grid-2">
-                    <div>
-                        <div class="card">
-                            <h2>Создать пост</h2>
-                            <div class="form-group">
-                                <textarea id="postContent" placeholder="Введите текст поста..."></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Куда публиковать:</label>
-                                <div class="platform-selector">
-                                    <label class="platform-option">
-                                        <input type="checkbox" id="sendTelegram" checked> Telegram
-                                    </label>
-                                    <label class="platform-option">
-                                        <input type="checkbox" id="sendDiscord" checked> Discord
-                                    </label>
+                <!-- Топбар -->
+                <header class="app__topbar">
+                    <button class="app__topbar-burger" id="sidebarToggle" type="button" aria-label="Меню">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="app__topbar-actions">
+                        <div class="dropdown" data-dropdown>
+                            <button class="dropdown__trigger" data-dropdown-trigger aria-expanded="false" type="button">
+                                <svg class="dropdown__trigger-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <span class="dropdown__name" id="userEmailShort" data-i18n="account.title">Аккаунт</span>
+                                <svg class="dropdown__chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <div class="dropdown__menu" data-dropdown-menu hidden>
+                                <button class="dropdown__item" type="button" onclick="showSection('account'); return false;">
+                                    <span class="dropdown__item-label">👤 <span data-i18n="account.title">Аккаунт</span></span>
+                                </button>
+                                <hr class="dropdown__divider">
+                                <button class="dropdown__item" type="button" data-submenu-trigger>
+                                    <span data-lang-flag>🇷🇺</span>
+                                    <span class="dropdown__item-label" data-lang-label>Русский</span>
+                                    <span class="dropdown__item-caret">▸</span>
+                                </button>
+                                <div class="dropdown__submenu" data-submenu hidden>
+                                    <button class="dropdown__item" type="button" data-lang-option="ru">
+                                        <span>🇷🇺</span>
+                                        <span class="dropdown__item-label">Русский</span>
+                                        <span class="dropdown__check">✓</span>
+                                    </button>
+                                    <button class="dropdown__item" type="button" data-lang-option="en">
+                                        <span>🇺🇸</span>
+                                        <span class="dropdown__item-label">English</span>
+                                        <span class="dropdown__check">✓</span>
+                                    </button>
                                 </div>
-                            </div>
-                            <button class="btn btn-primary" onclick="sendPost()">Опубликовать</button>
-                            <div id="postMessage"></div>
-                        </div>
-
-                        <div class="card">
-                            <h2>История постов</h2>
-                            <div id="historyList">
-                                <div class="text-center muted">Загрузка...</div>
+                                <button class="dropdown__item" type="button" data-submenu-trigger>
+                                    <span data-theme-icon>☀️</span>
+                                    <span class="dropdown__item-label" data-i18n="account.theme">Тема</span>
+                                    <span class="dropdown__item-caret">▸</span>
+                                </button>
+                                <div class="dropdown__submenu" data-submenu hidden>
+                                    <button class="dropdown__item" type="button" data-theme-option="light">
+                                        <span>☀️</span>
+                                        <span class="dropdown__item-label" data-i18n="account.theme_light">Светлая</span>
+                                        <span class="dropdown__check">✓</span>
+                                    </button>
+                                    <button class="dropdown__item" type="button" data-theme-option="dark">
+                                        <span>🌙</span>
+                                        <span class="dropdown__item-label" data-i18n="account.theme_dark">Тёмная</span>
+                                        <span class="dropdown__check">✓</span>
+                                    </button>
+                                </div>
+                                <hr class="dropdown__divider">
+                                <button class="dropdown__item" type="button" onclick="logout()">
+                                    <span class="dropdown__item-label">🚪 <span data-i18n="account.logout">Выйти</span></span>
+                            </button>
                             </div>
                         </div>
                     </div>
+                </header>
 
-                    <div>
-                        <div class="card">
-                            <h2>Telegram</h2>
-                            <div id="telegramStatus"></div>
-                            <div id="telegramConnectForm">
-                                <div class="form-group">
-                                    <label>Ссылка на канал</label>
-                                    <input type="text" id="telegramChannel" placeholder="https://t.me/ваш_канал">
-                                    <small>Бот должен быть администратором канала</small>
-                                </div>
-                                <button class="btn btn-primary" onclick="connectTelegram()">Подключить Telegram</button>
-                            </div>
-                            <div id="telegramMessage"></div>
-                        </div>
-
-                        <div class="card">
-                            <h2>Discord</h2>
-                            <div id="discordStatus"></div>
-                            
-                            <div class="steps" style="background: #eef0ff; border-color: #5865F2;">
-                                <strong>Шаг 1. Добавьте бота на сервер</strong>
-                                <p style="margin: 10px 0;">Нажмите кнопку ниже, выберите свой сервер и авторизуйте бота.</p>
-                                <a href="https://discord.com/oauth2/authorize?client_id=1547214636405755914&permissions=274878023680&integration_type=0&scope=bot" 
-                                   target="_blank" 
-                                   class="btn btn-discord" 
-                                   style="display: inline-block; text-decoration: none; text-align: center;">
-                                    🤖 Добавить бота на сервер
-                                </a>
-                            </div>
-
-                            <div class="steps">
-                                <strong>Шаг 2. Получите ID канала:</strong>
-                                <ol>
-                                    <li>В Discord включите <strong>Режим разработчика</strong> (Настройки → Дополнительно)</li>
-                                    <li>Кликните правой кнопкой по каналу → <strong>Копировать ID</strong></li>
-                                    <li>Вставьте ID в поле ниже</li>
-                                    <li>Нажмите <strong>"Подключить Discord"</strong></li>
-                                </ol>
-                            </div>
-
-                            <div id="discordConnectForm">
-                                <div class="form-group">
-                                    <label>ID канала</label>
-                                    <input type="text" id="discordChannelId" placeholder="123456789012345678">
-                                    <small>ID канала (18+ цифр), куда будут публиковаться посты</small>
-                                </div>
-                                <button class="btn btn-discord" onclick="connectDiscord()">Подключить Discord</button>
-                            </div>
-                            <div id="discordMessage"></div>
-                        </div>
+                <!-- Контент -->
+                <main class="app__content">
+                <!-- ============================================ -->
+                <!-- 1. ГЛАВНАЯ                                    -->
+                <!-- ============================================ -->
+                <section id="homeSection" class="page-section">
+                    <div class="home__hero">
+                        <h1 class="page__title" data-i18n="home.welcome">Добро пожаловать в CrossPoster!</h1>
+                        <p class="page__subtitle" data-i18n="home.subtitle">Публикуйте один пост сразу в Telegram и Discord.</p>
+                        <button class="btn btn-primary" onclick="showSection('create')">
+                            <span data-i18n="home.create_btn">＋ Создать публикацию</span>
+                        </button>
                     </div>
-                </div>
 
-                <div id="historyTab" class="hidden">
+                    <h2 class="page__section-title" data-i18n="home.channels_title">Подключённые площадки</h2>
+                    <div class="home__channels">
+                        <a href="#" class="channel-card" data-channel="telegram" onclick="showSection('telegram'); return false;">
+                            <div class="channel-card__head">
+                                <span class="channel-card__icon">🔵</span>
+                                <span class="channel-card__name" data-i18n="post.telegram">Telegram</span>
+                            </div>
+                            <div class="channel-card__status" id="homeTelegramStatus">
+                                <span class="status-badge is-idle" data-i18n="telegram.not_connected">Не подключен</span>
+                            </div>
+                            <div class="channel-card__detail" id="homeTelegramDetail"></div>
+                        </a>
+
+                        <a href="#" class="channel-card" data-channel="discord" onclick="showSection('discord'); return false;">
+                            <div class="channel-card__head">
+                                <span class="channel-card__icon">🟣</span>
+                                <span class="channel-card__name" data-i18n="post.discord">Discord</span>
+                            </div>
+                            <div class="channel-card__status" id="homeDiscordStatus">
+                                <span class="status-badge is-idle" data-i18n="discord.not_connected">Не подключен</span>
+                            </div>
+                            <div class="channel-card__detail" id="homeDiscordDetail"></div>
+                        </a>
+                    </div>
+
+                    <div class="page__section-head">
+                        <h2 class="page__section-title" data-i18n="home.recent_title">Последние публикации</h2>
+                        <a href="#" class="page__link" onclick="showSection('history'); return false;" data-i18n="home.view_all">Смотреть все →</a>
+                    </div>
+                    <div id="homeRecentList" class="home__recent">
+                        <div class="text-center muted" data-i18n="history.loading">Загрузка...</div>
+                    </div>
+                </section>
+
+                <!-- ============================================ -->
+                <!-- 2. СОЗДАТЬ ПОСТ                               -->
+                <!-- ============================================ -->
+                <section id="createSection" class="page-section hidden">
+                    <h1 class="page__title" data-i18n="post.create_title">Создать пост</h1>
+
                     <div class="card">
-                        <h2>История постов</h2>
+                        <div class="form-group">
+                            <textarea id="postContent" data-i18n-placeholder="post.placeholder" placeholder="Введите текст поста..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="post.where_publish">Куда публиковать:</label>
+                            <div class="platform-selector">
+                                <label class="platform-option">
+                                    <input type="checkbox" id="sendTelegram" checked>
+                                    <span data-i18n="post.telegram">Telegram</span>
+                                </label>
+                                <label class="platform-option">
+                                    <input type="checkbox" id="sendDiscord" checked>
+                                    <span data-i18n="post.discord">Discord</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="sendPost()" data-i18n="post.publish">Опубликовать</button>
+                        <div id="postMessage"></div>
+                    </div>
+                </section>
+
+                <!-- ============================================ -->
+                <!-- 3. ИСТОРИЯ ПОСТОВ                             -->
+                <!-- ============================================ -->
+                <section id="historySection" class="page-section hidden">
+                    <h1 class="page__title" data-i18n="history.title">История постов</h1>
+                    <div class="card">
                         <div id="historyListFull">
-                            <div class="text-center muted">Загрузка...</div>
+                            <div class="text-center muted" data-i18n="history.loading">Загрузка...</div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div id="accountTab" class="hidden">
+                <!-- ============================================ -->
+                <!-- 4. TELEGRAM                                   -->
+                <!-- ============================================ -->
+                <section id="telegramSection" class="page-section hidden">
+                    <h1 class="page__title" data-i18n="telegram.title">Telegram</h1>
                     <div class="card">
-                        <h2>Информация об аккаунте</h2>
-                        <p><strong>Email:</strong> <span id="accountEmail">—</span></p>
-                        <p><strong>ID пользователя:</strong> <span id="accountUserId">—</span></p>
-                        <p><strong>Статус:</strong> <span id="accountStatus">Активен</span></p>
+                        <div id="telegramStatus"></div>
+
+                        <div class="steps">
+                            <strong data-i18n="telegram.step1_title">Шаг 1. Добавьте бота в администраторы канала</strong>
+                            <p data-i18n="telegram.step1_text">Откройте Telegram, найдите бота @mytelegram5_bot и добавьте его в администраторы вашего канала с правом публикации сообщений.</p>
+                        </div>
+
+                        <div class="steps">
+                            <strong data-i18n="telegram.step2_title">Шаг 2. Укажите ссылку на канал</strong>
+                            <p data-i18n="telegram.step2_text">Скопируйте ссылку вида https://t.me/имя_канала и вставьте её в поле ниже, затем нажмите «Подключить Telegram».</p>
+                        </div>
+
+                        <div id="telegramConnectForm">
+                            <div class="form-group">
+                                <label data-i18n="telegram.channel_link">Ссылка на канал</label>
+                                <input type="text" id="telegramChannel" data-i18n-placeholder="telegram.channel_placeholder" placeholder="https://t.me/ваш_канал">
+                                <small data-i18n="telegram.bot_admin_note">Бот должен быть администратором канала</small>
+                            </div>
+                            <button class="btn btn-primary" onclick="connectTelegram()" data-i18n="telegram.connect">Подключить Telegram</button>
+                        </div>
+                        <div id="telegramMessage"></div>
                     </div>
-                </div>
+                </section>
+
+                <!-- ============================================ -->
+                <!-- 5. DISCORD                                    -->
+                <!-- ============================================ -->
+                <section id="discordSection" class="page-section hidden">
+                    <h1 class="page__title" data-i18n="discord.title">Discord</h1>
+                    <div class="card">
+                        <div id="discordStatus"></div>
+
+                        <div class="steps">
+                            <strong data-i18n="discord.step1_title">Шаг 1. Добавьте бота на сервер</strong>
+                            <p data-i18n="discord.step1_text">Нажмите кнопку ниже, выберите свой сервер и авторизуйте бота.</p>
+                            <a href="https://discord.com/oauth2/authorize?client_id=1547214636405755914&permissions=274878023680&integration_type=0&scope=bot" target="_blank" class="btn btn-discord" data-i18n="discord.add_bot">Добавить бота на сервер</a>
+                        </div>
+
+                        <div class="steps">
+                            <strong data-i18n="discord.step2_title">Шаг 2. Получите ID канала:</strong>
+                            <ol>
+                                <li data-i18n="discord.step2_li1">В Discord включите Режим разработчика (Настройки - Дополнительно)</li>
+                                <li data-i18n="discord.step2_li2">Кликните правой кнопкой по каналу - Копировать ID</li>
+                                <li data-i18n="discord.step2_li3">Вставьте ID в поле ниже</li>
+                                <li data-i18n="discord.step2_li4">Нажмите "Подключить Discord"</li>
+                            </ol>
+                        </div>
+
+                        <div id="discordConnectForm">
+                            <div class="form-group">
+                                <label data-i18n="discord.channel_id">ID канала</label>
+                                <input type="text" id="discordChannelId" data-i18n-placeholder="discord.channel_id_placeholder" placeholder="123456789012345678">
+                                <small data-i18n="discord.channel_id_note">ID канала (18+ цифр), куда будут публиковаться посты</small>
+                            </div>
+                            <button class="btn btn-discord" onclick="connectDiscord()" data-i18n="discord.connect">Подключить Discord</button>
+                        </div>
+                        <div id="discordMessage"></div>
+                    </div>
+                </section>
+                
+                <!-- ============================================ -->
+                <!-- 6. АККАУНТ                                    -->
+                <!-- ============================================ -->
+                <section id="accountSection" class="page-section hidden">
+                    <h1 class="page__title" data-i18n="account.title">Аккаунт</h1>
+
+                    <div class="card">
+                        <div class="account-row">
+                            <span class="account-row__label" data-i18n="account.email">Email</span>
+                            <span class="account-row__value" id="accountEmail">—</span>
+                        </div>
+                        <div class="account-row">
+                            <span class="account-row__label" data-i18n="account.name">Имя</span>
+                            <span class="account-row__value" id="accountName">—</span>
+                        </div>
+                        <div class="account-row">
+                            <span class="account-row__label" data-i18n="account.user_id">ID пользователя</span>
+                            <span class="account-row__value" id="accountUserId">—</span>
+                        </div>
+                        <div class="account-row">
+                            <span class="account-row__label" data-i18n="account.status">Статус</span>
+                            <span class="account-row__value">
+                                <span class="status-badge is-success" data-i18n="account.status_active">Активен</span>
+                            </span>
+                        </div>
+                    </div>
+                </section>               
+
+                </main>
+                
             </div>
         </div>
     </div>
@@ -528,7 +731,7 @@
             const messageDiv = document.getElementById('registerMessage');
 
             if (!email || !password) {
-                messageDiv.innerHTML = '<div class="alert alert-error">Заполните все поля</div>';
+                messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.t('server.fill_all_fields') + '</div>';
                 return;
             }
 
@@ -544,10 +747,10 @@
                     messageDiv.innerHTML = '<div class="alert alert-success">Регистрация успешна! Выполняется вход...</div>';
                     await autoLogin(email, password);
                 } else {
-                    messageDiv.innerHTML = '<div class="alert alert-error">' + data.message + '</div>';
+                    messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.tServer(data.message) + '</div>';
                 }
             } catch (error) {
-                messageDiv.innerHTML = '<div class="alert alert-error">Ошибка соединения</div>';
+                messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.t('server.connection_error') + '</div>';
             }
         }
 
@@ -571,12 +774,12 @@
                     loadDiscordStatus();
                     loadHistory();
                     loadHistoryFull();
-                    showPostTab();
+                    showSection('home');
                 } else {
-                    document.getElementById('loginMessage').innerHTML = '<div class="alert alert-error">' + data.message + '</div>';
+                    document.getElementById('loginMessage').innerHTML = '<div class="alert alert-error">' + i18n.tServer(data.message) + '</div>';
                 }
             } catch (error) {
-                document.getElementById('loginMessage').innerHTML = '<div class="alert alert-error">Ошибка соединения</div>';
+                document.getElementById('loginMessage').innerHTML = '<div class="alert alert-error">' + i18n.t('server.connection_error') + '</div>';
             }
         }
 
@@ -586,7 +789,7 @@
             const messageDiv = document.getElementById('loginMessage');
 
             if (!email || !password) {
-                messageDiv.innerHTML = '<div class="alert alert-error">Заполните все поля</div>';
+                messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.t('server.fill_all_fields') + '</div>';
                 return;
             }
 
@@ -609,16 +812,22 @@
                     loadDiscordStatus();
                     loadHistory();
                     loadHistoryFull();
-                    showPostTab();
+                    showSection('home');
                 } else {
-                    messageDiv.innerHTML = '<div class="alert alert-error">' + data.message + '</div>';
+                    messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.tServer(data.message) + '</div>';
                 }
             } catch (error) {
-                messageDiv.innerHTML = '<div class="alert alert-error">Ошибка соединения</div>';
+                messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.t('server.connection_error') + '</div>';
             }
         }
 
-        function logout() {
+        async function logout() {
+            try {
+                await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+            } catch (e) {
+                console.error('[logout]', e);
+            }
+            try { localStorage.removeItem('crossposter_section'); } catch (e) {}
             userId = null;
             currentUserEmail = '';
             document.getElementById('mainSection').classList.add('hidden');
@@ -627,26 +836,24 @@
             document.getElementById('loginPassword').value = '';
         }
 
-        function showPostTab() {
-            document.getElementById('postTab').classList.remove('hidden');
-            document.getElementById('historyTab').classList.add('hidden');
-            document.getElementById('accountTab').classList.add('hidden');
-        }
+        function showSection(name) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(name + 'Section');
+            if (target) target.classList.remove('hidden');
+            try { localStorage.setItem('crossposter_section', name); } catch (e) {}
+            document.querySelectorAll('.sidebar__link').forEach(el => {
+                el.classList.toggle('is-active', el.getAttribute('data-section') === name);
+            });
 
-        function showHistoryTab() {
-            document.getElementById('postTab').classList.add('hidden');
-            document.getElementById('historyTab').classList.remove('hidden');
-            document.getElementById('accountTab').classList.add('hidden');
-            loadHistoryFull();
+            if (name === 'history') loadHistoryFull();
+            if (name === 'home') loadHome();
+            if (name === 'account') {
+                document.getElementById('accountEmail').textContent = currentUserEmail || '—';
+                document.getElementById('accountUserId').textContent = userId || '—';
+                document.getElementById('accountName').textContent = '—';
+            }
         }
-
-        function showAccountTab() {
-            document.getElementById('postTab').classList.add('hidden');
-            document.getElementById('historyTab').classList.add('hidden');
-            document.getElementById('accountTab').classList.remove('hidden');
-            document.getElementById('accountEmail').textContent = currentUserEmail || '—';
-            document.getElementById('accountUserId').textContent = userId || '—';
-        }
+           
 
         // ========== TELEGRAM ==========
 
@@ -657,9 +864,9 @@
                 const statusDiv = document.getElementById('telegramStatus');
 
                 if (data.data && data.data.connected) {
-                    statusDiv.innerHTML = '<div class="alert alert-success">✅ Подключен: ' + data.data.channel_link + '</div>';
+                    statusDiv.innerHTML = '<div class="alert alert-success">✅ ' + i18n.t('telegram.connected') + ': ' + data.data.channel_link + '</div>';
                 } else {
-                    statusDiv.innerHTML = '<div class="alert">❌ Не подключен</div>';
+                    statusDiv.innerHTML = '<div class="alert">❌ ' + i18n.t('telegram.not_connected') + '</div>';
                 }
             } catch (error) {
                 console.error('Error loading Telegram status:', error);
@@ -675,7 +882,7 @@
                 return;
             }
 
-            messageDiv.innerHTML = '<div class="alert"><div class="loading"></div> Подключение...</div>';
+            messageDiv.innerHTML = '<div class="alert"><div class="loading"></div> ' + i18n.t('history.loading') + '</div>';
 
             try {
                 const response = await fetch('/api/connect/telegram', {
@@ -686,14 +893,14 @@
                 const data = await response.json();
 
                 if (data.status === 'success') {
-                    messageDiv.innerHTML = '<div class="alert alert-success">✅ ' + data.message + '</div>';
+                    messageDiv.innerHTML = '<div class="alert alert-success">✅ ' + i18n.tServer(data.message) + '</div>';
                     document.getElementById('telegramChannel').value = '';
                     loadTelegramStatus();
                 } else {
-                    messageDiv.innerHTML = '<div class="alert alert-error">❌ ' + data.message + '</div>';
+                    messageDiv.innerHTML = '<div class="alert alert-error">❌ ' + i18n.tServer(data.message) + '</div>';
                 }
             } catch (error) {
-                messageDiv.innerHTML = '<div class="alert alert-error">❌ Ошибка соединения</div>';
+                messageDiv.innerHTML = '<div class="alert alert-error">❌ ' + i18n.t('server.connection_error') + '</div>';
             }
         }
 
@@ -706,9 +913,9 @@
                 const statusDiv = document.getElementById('discordStatus');
 
                 if (data.data && data.data.connected) {
-                    statusDiv.innerHTML = '<div class="alert alert-success">✅ Подключен: канал ' + data.data.channel_id + '</div>';
+                    statusDiv.innerHTML = '<div class="alert alert-success">✅ ' + i18n.t('discord.connected') + ': ' + data.data.channel_id + '</div>';
                 } else {
-                    statusDiv.innerHTML = '<div class="alert">❌ Не подключен</div>';
+                    statusDiv.innerHTML = '<div class="alert">❌ ' + i18n.t('discord.not_connected') + '</div>';
                 }
             } catch (error) {
                 console.error('Error loading Discord status:', error);
@@ -729,7 +936,7 @@
                 return;
             }
 
-            messageDiv.innerHTML = '<div class="alert"><div class="loading"></div> Подключение...</div>';
+            messageDiv.innerHTML = '<div class="alert"><div class="loading"></div> ' + i18n.t('history.loading') + '</div>';
 
             try {
                 const response = await fetch('/api/connect/discord', {
@@ -740,14 +947,14 @@
                 const data = await response.json();
 
                 if (data.status === 'success') {
-                    messageDiv.innerHTML = '<div class="alert alert-success">✅ ' + data.message + '</div>';
+                    messageDiv.innerHTML = '<div class="alert alert-success">✅ ' + i18n.tServer(data.message) + '</div>';
                     document.getElementById('discordChannelId').value = '';
                     loadDiscordStatus();
                 } else {
-                    messageDiv.innerHTML = '<div class="alert alert-error">❌ ' + data.message + '</div>';
+                    messageDiv.innerHTML = '<div class="alert alert-error">❌ ' + i18n.tServer(data.message) + '</div>';
                 }
             } catch (error) {
-                messageDiv.innerHTML = '<div class="alert alert-error">❌ Ошибка соединения</div>';
+                messageDiv.innerHTML = '<div class="alert alert-error">❌ ' + i18n.t('server.connection_error') + '</div>';
             }
         }
 
@@ -796,19 +1003,19 @@
                     loadHistory();
                     loadHistoryFull();
                 } else {
-                    messageDiv.innerHTML = '<div class="alert alert-error">' + data.message + '</div>';
+                    messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.tServer(data.message) + '</div>';
                 }
             } catch (error) {
-                messageDiv.innerHTML = '<div class="alert alert-error">Ошибка соединения</div>';
+                messageDiv.innerHTML = '<div class="alert alert-error">' + i18n.t('server.connection_error') + '</div>';
             }
         }
 
         // ========== HISTORY ==========
 
         function statusLabel(status) {
-            if (status === 'published') return '✅ опубликовано';
-            if (status === 'error') return '❌ ошибка';
-            return '⏳ ожидание';
+            if (status === 'published') return i18n.t('history.status_published');
+            if (status === 'error') return i18n.t('history.status_error');
+            return i18n.t('history.status_pending');
         }
 
         async function loadHistory() {
@@ -829,10 +1036,10 @@
                         </div>
                     `).join('');
                 } else {
-                    historyDiv.innerHTML = '<div class="text-center muted">Нет постов. Создайте первый!</div>';
+                    historyDiv.innerHTML = '<div class="text-center muted">' + i18n.t('history.empty') + '</div>';
                 }
             } catch (error) {
-                document.getElementById('historyList').innerHTML = '<div class="alert alert-error">Ошибка загрузки истории</div>';
+                document.getElementById('historyList').innerHTML = '<div class="alert alert-error">' + i18n.t('history.load_error') + '</div>';
             }
         }
 
@@ -847,25 +1054,113 @@
                         <div class="post-item">
                             <div class="post-content">${escapeHtml(post.content).substring(0, 200)}${post.content.length > 200 ? '...' : ''}</div>
                             <div class="post-meta">
-                                <span>${new Date(post.created_at).toLocaleString('ru-RU')}</span>
+                                <span>${new Date(post.created_at).toLocaleString(i18n.getLang() === 'ru' ? 'ru-RU' : 'en-US')}</span>
                                 <span class="status-badge">Telegram: ${statusLabel(post.telegram_status)}</span>
                                 <span class="status-badge">Discord: ${statusLabel(post.discord_status)}</span>
                             </div>
                         </div>
                     `).join('');
                 } else {
-                    historyDiv.innerHTML = '<div class="text-center muted">Нет постов. Создайте первый!</div>';
+                    historyDiv.innerHTML = '<div class="text-center muted">' + i18n.t('history.empty') + '</div>';
                 }
             } catch (error) {
-                document.getElementById('historyListFull').innerHTML = '<div class="alert alert-error">Ошибка загрузки истории</div>';
+                document.getElementById('historyListFull').innerHTML = '<div class="alert alert-error">' + i18n.t('history.load_error') + '</div>';
             }
         }
+        
+        async function loadHome() {
+            // Статус Telegram
+            try {
+                const tgRes = await fetch('/api/connect/telegram/status');
+                const tg = await tgRes.json();
+                const tgStatusEl = document.getElementById('homeTelegramStatus');
+                const tgDetailEl = document.getElementById('homeTelegramDetail');
+                if (tg.status === 'success' && tg.data.connected) {
+                    tgStatusEl.innerHTML = '<span class="status-badge is-success">✓ ' + i18n.t('telegram.connected') + '</span>';
+                    tgDetailEl.textContent = tg.data.channel_link || '';
+                } else {
+                    tgStatusEl.innerHTML = '<span class="status-badge is-idle">' + i18n.t('telegram.not_connected') + '</span>';
+                    tgDetailEl.textContent = '';
+                }
+            } catch (e) { console.error('[loadHome tg]', e); }
 
+            // Статус Discord
+            try {
+                const dcRes = await fetch('/api/connect/discord/status');
+                const dc = await dcRes.json();
+                const dcStatusEl = document.getElementById('homeDiscordStatus');
+                const dcDetailEl = document.getElementById('homeDiscordDetail');
+                if (dc.status === 'success' && dc.data.connected) {
+                    dcStatusEl.innerHTML = '<span class="status-badge is-success">✓ ' + i18n.t('discord.connected') + '</span>';
+                    dcDetailEl.textContent = dc.data.channel_id || '';
+                } else {
+                    dcStatusEl.innerHTML = '<span class="status-badge is-idle">' + i18n.t('discord.not_connected') + '</span>';
+                    dcDetailEl.textContent = '';
+                }
+            } catch (e) { console.error('[loadHome dc]', e); }
+
+            // Последние 3 поста
+            try {
+                const hRes = await fetch('/api/history');
+                const h = await hRes.json();
+                const list = document.getElementById('homeRecentList');
+                if (h.status === 'success' && h.data.length > 0) {
+                    list.innerHTML = h.data.slice(0, 3).map(post => `
+                        <div class="recent-post">
+                            <div class="recent-post__date">${new Date(post.created_at).toLocaleString(i18n.getLang() === 'ru' ? 'ru-RU' : 'en-US')}</div>
+                            <div class="recent-post__content">${escapeHtml(post.content).substring(0, 120)}${post.content.length > 120 ? '...' : ''}</div>
+                            <div class="recent-post__status">
+                                <span class="status-badge ${post.telegram_status === 'published' ? 'is-success' : 'is-idle'}">🔵 Telegram</span>
+                                <span class="status-badge ${post.discord_status === 'published' ? 'is-success' : 'is-idle'}">🟣 Discord</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    list.innerHTML = '<div class="text-center muted">' + i18n.t('history.empty') + '</div>';
+                }
+            } catch (e) { console.error('[loadHome history]', e); }
+        }
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
+
+        // ============================================================
+        // Тихая проверка сессии при загрузке страницы
+        // ============================================================
+        (async function checkSession() {
+            try {
+                const res = await fetch('/api/me', { credentials: 'include' });
+                if (!res.ok) {
+                    return; // 401 — сессии нет, остаёмся на форме логина
+                }
+                const data = await res.json();
+                if (data.status !== 'success') return;
+
+                userId = data.data.userId;
+                currentUserEmail = data.data.email;
+
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('mainSection').classList.remove('hidden');
+                document.getElementById('accountEmail').textContent = data.data.email;
+                document.getElementById('accountUserId').textContent = data.data.userId;
+
+                if (typeof loadTelegramStatus === 'function') loadTelegramStatus();
+                if (typeof loadDiscordStatus === 'function') loadDiscordStatus();
+                if (typeof loadHistory === 'function') loadHistory();
+                if (typeof loadHistoryFull === 'function') loadHistoryFull();
+                let savedSection = 'home';
+                try { savedSection = localStorage.getItem('crossposter_section') || 'home'; } catch (e) {}
+                if (typeof showSection === 'function') showSection(savedSection);
+            } catch (e) {
+                console.error('[checkSession]', e);
+            }
+        })();
+
     </script>
+    <script src="js/dropdown.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 </html>
