@@ -165,6 +165,37 @@ function requireAuth(req, res, next) {
     next();
 }
 
+
+// GET /api/me — проверка текущей сессии
+app.get('/api/me', requireAuth, async (req, res) => {
+    try {
+        const [users] = await db.query('SELECT user_id, email FROM User WHERE user_id = ?', [req.session.userId]);
+        if (users.length === 0) {
+            return res.status(401).json({ status: 'error', message: 'Пользователь не найден' });
+        }
+        res.json({ 
+            status: 'success', 
+            data: { 
+                userId: users[0].user_id, 
+                email: users[0].email 
+            } 
+        });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: 'Ошибка сервера' });
+    }
+});
+
+// POST /api/logout — выход из аккаунта
+app.post('/api/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ status: 'error', message: 'Ошибка выхода' });
+        }
+        res.clearCookie('connect.sid');
+        res.json({ status: 'success' });
+    });
+});
+
 // ========== TELEGRAM ЭНДПОИНТЫ ==========
 
 // POST /api/connect/telegram - сохраняем ссылку на канал
